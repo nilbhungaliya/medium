@@ -3,6 +3,7 @@ import { verify } from "hono/jwt";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { createPostSchema, updatePostSchema } from "unique-package-name";
+import { cors } from "hono/cors";
 
 export const blogRouter = new Hono<{
     Bindings: {
@@ -13,7 +14,7 @@ export const blogRouter = new Hono<{
         userId: string;
     };
 }>()
-
+blogRouter.use('/*', cors());
 blogRouter.use("/*", async (c, next) => {
     try {
         // Extract the Authorization header
@@ -149,6 +150,16 @@ blogRouter.get('/get/id/:id', async (c) => {
             where: {
                 // id:body.id
                 id: id
+            },
+            select:{
+                content: true,
+                title: true,
+                id: true,
+                author:{
+                    select:{
+                        name:true
+                    }
+                }
             }
         });
 
@@ -173,7 +184,18 @@ blogRouter.get('/bulk', async (c) => {
 
     try {
         // Fetch all blog posts
-        const posts = await prisma.post.findMany();
+        const posts = await prisma.post.findMany({
+            select:{
+                content: true,
+                title: true,
+                id: true,
+                author:{
+                    select:{
+                        name:true
+                    }
+                }
+            }
+        });
 
         return c.json(posts);
     } catch (error) {

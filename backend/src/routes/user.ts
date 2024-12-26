@@ -91,9 +91,9 @@ userRouter.post("/signin", async (c) => {
     }
 
     // Generate JWT token
-    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET);
 
-    return c.json({ jwt });
+    return c.json({ token });
   } catch (error) {
     return c.json({ error: "Internal server error" }, 500);
   } finally {
