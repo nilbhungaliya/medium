@@ -22,7 +22,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
 
             // Store the token with Bearer prefix in localStorage
             localStorage.setItem("token", tokenWithBearer);
-            navigate("/blogs");
+            navigate("/signin");
         } catch (e) {
             alert("Error while signing up")
             // alert the user here that the request failed
