@@ -38,20 +38,17 @@ userRouter.post("/signup", async (c) => {
       },
     });
 
-    const key = c.env.JWT_SECRET;
-
     // Generate a JWT token
-    const token = await sign({id : user.id }, key);
+    const token = await sign({id : user.id }, c.env.JWT_SECRET);
     return c.json({token});
   } catch (error: any) {
-    console.error("Signup error:", error);
 
     // Handle unique constraint violation (e.g., duplicate email)
     if (error.code === "P2002") {
       return c.json({ error: "Email is already in use" }, 409);
     }
 
-    return c.json({ error: "Internal server error" }, 500);
+    return c.json({ message: "Internal server error", error}, 500);
   } finally {
     // Ensure Prisma client is properly disconnected
     await prisma.$disconnect();
