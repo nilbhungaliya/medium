@@ -22,7 +22,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
 
             // Store the token with Bearer prefix in localStorage
             localStorage.setItem("token", tokenWithBearer);
-            navigate("/signin");
+            navigate("/blogs");
         } catch (e) {
             alert("Error while signing up")
             // alert the user here that the request failed
@@ -51,7 +51,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
                             name: e.target.value
                         })
                     }} /> : null}
-                    <LabelledInput label="Username" placeholder="nil@gmail.com" onChange={(e) => {
+                    <LabelledInput label="email" placeholder="nil@gmail.com" onChange={(e) => {
                         setPostInputs({
                             ...postInputs,
                             email: e.target.value
