@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign, verify } from "hono/jwt";
 import {signinSchema, signupSchema} from "unique-package-name";
+import { cors } from "hono/cors";
 
 export const userRouter = new Hono<{
     Bindings: {
@@ -10,6 +11,8 @@ export const userRouter = new Hono<{
       JWT_SECRET: string;
     };
   }>();
+
+userRouter.use("/*", cors());
 
 userRouter.post("/signup", async (c) => {
   // Initialize Prisma client with the accelerate extension
